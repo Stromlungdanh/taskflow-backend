@@ -3,9 +3,11 @@ package com.taskflow.controller;
 import com.taskflow.dto.AuthResponse;
 import com.taskflow.dto.LoginRequest;
 import com.taskflow.dto.RefreshTokenRequest;
+import com.taskflow.dto.RegisterRequest;
 import com.taskflow.model.User;
 import com.taskflow.security.JwtUtil;
 import com.taskflow.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,8 +21,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        userService.register(user);
+    public String register(@Valid @RequestBody RegisterRequest request){
+        userService.register(request.getUsername(), request.getPassword());
         return "Register success";
     }
 

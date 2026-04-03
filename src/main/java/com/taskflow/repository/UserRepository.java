@@ -18,13 +18,14 @@ public class UserRepository {
 
     public void save(User user) {
 
-        String sql = "INSERT INTO users(username,password,email) VALUES(?,?,?)";
+        String sql = "INSERT INTO users(username,password,email,role) VALUES(?,?,?,?)";
 
         jdbcTemplate.update(
                 sql,
                 user.getUsername(),
                 user.getPassword(),
-                user.getEmail()
+                user.getEmail(),
+                user.getRole()
         );
     }
 
@@ -72,6 +73,8 @@ public class UserRepository {
 
         return users.isEmpty() ? null : users.get(0);
     }
+
+
 
 
 }
