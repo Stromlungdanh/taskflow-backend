@@ -4,13 +4,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
 
-    private static final String SECRET = "taskflow-secret-key-taskflow-secret-key";
-    private static final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private static final String DEFAULT_SECRET = "taskflow-secret-key-taskflow-secret-key";
+    private static final String SECRET = System.getenv().getOrDefault("JWT_SECRET", DEFAULT_SECRET);
+    private static final Key key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
     private static final long ACCESS_TOKEN_EXPIRE = 1000 * 60 * 15; // 15 phút
     private static final long REFRESH_TOKEN_EXPIRE = 1000L * 60 * 60 * 24 * 7; // 7 ngày

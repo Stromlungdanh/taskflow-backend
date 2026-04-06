@@ -17,14 +17,12 @@ public class UserRepository {
     }
 
     public void save(User user) {
-
-        String sql = "INSERT INTO users(username,password,email,role) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO users(username, password, role) VALUES(?, ?, ?)";
 
         jdbcTemplate.update(
                 sql,
                 user.getUsername(),
                 user.getPassword(),
-                user.getEmail(),
                 user.getRole()
         );
     }
@@ -37,7 +35,6 @@ public class UserRepository {
             user.setId(rs.getLong("id"));
             user.setUsername(rs.getString("username"));
             user.setPassword(rs.getString("password"));
-            user.setEmail(rs.getString("email"));
             user.setRole(rs.getString("role"));
             return user;
         }, username);
@@ -59,6 +56,7 @@ public class UserRepository {
                 )
         );
     }
+
     public User findById(Long id) {
         String sql = "SELECT * FROM users WHERE id = ?";
 
@@ -73,8 +71,4 @@ public class UserRepository {
 
         return users.isEmpty() ? null : users.get(0);
     }
-
-
-
-
 }
