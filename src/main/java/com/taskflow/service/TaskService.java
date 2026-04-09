@@ -78,7 +78,7 @@ public class TaskService {
         Project project = projectRepository.getProjectById(projectId);
         if (project == null) throw new RuntimeException("Project not found");
         projectPermissionService.requireProjectMember(projectId, currentUser.getId());
-        Long assigneeFilter = isProjectManager(projectId, currentUser.getId()) ? null : currentUser.getId();
+        Long assigneeFilter = null;
         int offset = page * size;
         return new PageResponse<>(
             taskRepository.findTasksByProjectIdWithFilter(projectId, status, priority, assigneeFilter, size, offset),
@@ -142,7 +142,7 @@ public class TaskService {
         Project project = projectRepository.getProjectById(request.getProjectId());
         if (project == null) throw new RuntimeException("Project not found");
         projectPermissionService.requireProjectMember(request.getProjectId(), currentUser.getId());
-        Long assigneeFilter = isProjectManager(request.getProjectId(), currentUser.getId()) ? null : currentUser.getId();
+        Long assigneeFilter = null;
         return taskRepository.searchTasks(request.getProjectId(), request.getTitle(), request.getPriority(), request.getStatus(), assigneeFilter, page, size);
     }
 }
