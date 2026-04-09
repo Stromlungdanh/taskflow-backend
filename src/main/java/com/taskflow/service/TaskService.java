@@ -52,13 +52,19 @@ public class TaskService {
         User currentUser = getCurrentUser();
         Project project = projectRepository.getProjectById(request.getProjectId());
         if (project == null) throw new RuntimeException("Project not found");
-        projectPermissionService.requireOwnerOrAdmin(request.getProjectId(), currentUser.getId());
+        projectPermissionService.requireProjectMember(request.getProjectId(), currentUser.getId());
         if (request.getAssigneeId() != null && !projectMemberRepository.existsByProjectIdAndUserId(request.getProjectId(), request.getAssigneeId())) {
             throw new RuntimeException("Assignee is not a member of this project");
         }
         Task task = new Task();
-        task.setTitle(request.getTitle()); task.setDescription(request.getDescription()); task.setStatus(request.getStatus()); task.setPriority(request.getPriority());
-        task.setProjectId(request.getProjectId()); task.setCreatedBy(currentUser.getId()); task.setAssigneeId(request.getAssigneeId()); task.setOrderIndex((int) (System.currentTimeMillis() / 1000));
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setStatus(request.getStatus());
+        task.setPriority(request.getPriority());
+        task.setProjectId(request.getProjectId());
+        task.setCreatedBy(currentUser.getId());
+        task.setAssigneeId(request.getAssigneeId());
+        task.setOrderIndex((int) (System.currentTimeMillis() / 1000));
         taskRepository.createTask(task);
         return task;
     }
